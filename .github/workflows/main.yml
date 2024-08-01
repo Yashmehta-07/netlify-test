@@ -18,11 +18,11 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Install Netlify
+      - name: Install Netlify CLI
         run: npm install netlify-cli@17.10.1 -g
 
       - name: Install Dependencies
-        run: npm i
+        run: npm install
 
       - name: Build project
         run: npm run build
@@ -30,7 +30,10 @@ jobs:
       - name: Deploy to Netlify
         id: netlify_deploy
         run: |
+          prod_flag=""
+          if [ "${GITHUB_REF#refs/heads/}" = "main" ]; then prod_flag="--prod"; fi
           netlify deploy \
             --dir build \
             --site ${{ secrets.NETLIFY_SITE_ID }} \
-            --auth ${{ secrets.NETLIFY_API_TOKEN }}
+            --auth ${{ secrets.NETLIFY_API_TOKEN }} \
+            $prod_flag
