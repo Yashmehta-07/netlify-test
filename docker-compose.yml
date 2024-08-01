@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  react:
+    build: ./
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+    container_name: react
+
+networks:
+  mynetwork:
+    driver: bridge
